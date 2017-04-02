@@ -60,6 +60,33 @@ public class Config {
     //Tekst na przycisku Button4
     public static String tekstButton4;
     
+    //Ścieżka do obrazku pozioma ściana
+    public static String poziom;
+    
+    //Ścieżka do obrazku pionowa ściana
+    public static String pion;
+    
+    //Ścieżka do obrazku pacman
+    public static String pacman;
+
+    //Ścieżka do obrazku duszek
+    public static String duszek;
+    
+    //Ścieżka do obrazku niebieski duszek
+    public static String niebieskiDuszek;
+    
+    //Ścieżka do obrazku puste pole
+    public static String puste;
+    
+    //Ścieżka do obrazku pole z kulka
+    public static String kulka;
+    
+    //Tekst na przycisku pauza
+    public static String pauza;
+    
+    //Preferowana wysokosc interfejsu w grze
+    public static int wysokoscin;
+    
     /**
      * Metoda parsująca dane konfiguracyjne, dane są wczytane z lokalnego pliku konfiguracyjnego
      * 
@@ -70,7 +97,7 @@ public class Config {
     	wysokosc = Integer.parseInt(config.getProperty("wysokosc"));
     	szerokosc = Integer.parseInt(config.getProperty("szerokosc"));
     	kodobrazu = Integer.parseInt(config.getProperty("kodobrazu"));
-    	plikPoziom = config.getProperty("plikPoziom").split(","); //zmienielm na rodzielanie przecinkiemxd
+    	plikPoziom = config.getProperty("plikPoziom").split(",");
     	plikWyniki = config.getProperty("plikWyniki");
     	plikInformacje=config.getProperty("plikInformacje");
     	liczbaPoziomow=Integer.parseInt(config.getProperty("liczbaPoziomow"));
@@ -83,10 +110,16 @@ public class Config {
     	tekstButton2=config.getProperty("tekstButton2");
     	tekstButton3=config.getProperty("tekstButton3");
     	tekstButton4=config.getProperty("tekstButton4");
-   
+    	poziom=config.getProperty("Poziom");
+        pion=config.getProperty("Pion");
+        pacman=config.getProperty("Pacman");
+        duszek=config.getProperty("Duszek");
+        niebieskiDuszek=config.getProperty("niebieskiDuszek");
+        puste=config.getProperty("Puste");
+        kulka=config.getProperty("Kulka");
+        pauza=config.getProperty("pauza");
 
     }
-    
 
 
    
@@ -108,6 +141,7 @@ public class Config {
     protected static String getData(String key) {
  return testData.getProperty(key);
     }
+
 }
 
 

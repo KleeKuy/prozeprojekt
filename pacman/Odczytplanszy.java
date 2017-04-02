@@ -36,8 +36,14 @@ public class Odczytplanszy {
 		FileReader filer = new FileReader(getData("plikPoziom"));
 		BufferedReader buffr = new BufferedReader(filer);
 		
-		
+		if(wysokosc<10 && szerokosc<10)
+		buffr.skip(6);
+		else if((wysokosc>=10 && szerokosc<10) || (wysokosc<10 && szerokosc>=10))
 		buffr.skip(7);
+		else if(wysokosc>10 && szerokosc>10)
+		buffr.skip(8);
+		
+		
 		char[][] punkty = new char[szerokosc][wysokosc];
 		
 		int i=0;
