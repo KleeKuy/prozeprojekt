@@ -74,11 +74,11 @@ public class Plansza extends JFrame {
 			mainpanel.add(button,BorderLayout.EAST);
 			mainpanel.add(gra,BorderLayout.SOUTH);
 			add(mainpanel);
-			
+			//gra.zaladujplansze();
 			
 	        this.addComponentListener(new ComponentAdapter() {
 	        	public void componentResized(ComponentEvent ce) {
-	        		gra.updateOffscreenSize(ce.getComponent().getWidth(), ce.getComponent().getHeight());
+	        		//gra.updateOffscreenSize(ce.getComponent().getWidth(), ce.getComponent().getHeight());
 	        	}
 	        });
 		

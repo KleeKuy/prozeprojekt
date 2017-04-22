@@ -11,7 +11,6 @@ public class OknoZakoncz extends JFrame {
     private JPanel PanelZakoncz;
     private JButton ButtonTak;
     private JButton ButtonNie;
-    private JTextArea czyNapewnoChceszWyjśćTextArea;
 
 
     public OknoZakoncz() {

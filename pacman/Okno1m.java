@@ -5,6 +5,7 @@ import java.util.Properties;
 
 import pacman.Okno1;
 import pacman.OknoZakoncz;
+import pacman.OknoWyniki;
 import pacman.Plansza;
 import pacman.Config;
 
@@ -12,6 +13,9 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * Okno główne gry
+ */
 public class Okno1m extends JFrame{
     private JPanel PacManPanel;
     private JTextArea pacManGameTextArea;
@@ -21,9 +25,16 @@ public class Okno1m extends JFrame{
     private JButton Button4;
 
 
-
+    /**
+     * Konstruktor głównego menu
+     */
     public Okno1m() {
+
+        /**
+         * Nadpisywanie parametru klasy nadrzędnej JFrame
+         */
         super("PacMan");
+
         setContentPane(PacManPanel);
 
         pack();
@@ -33,37 +44,69 @@ public class Okno1m extends JFrame{
         setVisible(true);
 
 
+        /**
+         * Funkcja pierwszego przycisku
+         */
+        Button1.addActionListener(new ActionListener() {
+            @Override
+            /**
+             * Metoda opisująca dzisałanie drugiego przycisku w menu
+             * @param e2 Obiekt interakcji z użytkownikiem
+             */
+            public void actionPerformed(ActionEvent e2)  {
+                Plansza nextWindowGame = new Plansza();
+                nextWindowGame.setVisible(true);
+
+            }
+
+
+
+        });
+
+        /**
+         * Funkcja drugiego przycisku
+         */
+        Button2.addActionListener(new ActionListener() {
+            @Override
+            /**
+             * Metoda opisująca dzisałanie drugiego przycisku w menu
+             * @param e Obiekt interakcji z użytkownikiem
+             */
+            public void actionPerformed(ActionEvent e) {
+            OknoWyniki nextWindowScores = new OknoWyniki();
+            nextWindowScores.setVisible(true);
+            }
+        });
+
+        /**
+         * Funkcja trzeciego przycisku
+         */
+        Button3.addActionListener(new ActionListener() {
+            @Override
+            /** Metoda opisująca dzisałanie trzeciego przycisku w menu
+             * @param e Obiekt interakcji z użytkownikiem
+             */
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+
+
+        /**
+         * Funkcja czwartego przycisku
+         */
         Button4.addActionListener(new ActionListener() {
             @Override
+            /**
+             * Metoda opisująca dzisałanie czwartego przycisku w menu
+             * @param e Obiekt interakcji z użytkownikiem
+             */
             public void actionPerformed(ActionEvent e) {
 
                 OknoZakoncz nextWindowEnd = new OknoZakoncz();
                 nextWindowEnd.setVisible(true);
             }
         });
-        Button1.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) throws IOException,InterruptedException {
 
-                Plansza nextWindowGame = new Plansza();
-                nextWindowGame.setVisible(true);
-
-                Odczytplanszy con = new Odczytplanszy();
-                char[][] pkty = con.odczytplanszy();
-                int[] param = con.odczytparametrow();
-
-
-                nextWindowGame.launchFrame(param[1],param[0],pkty);
-
-
-
-            }
-        });
-        Button2.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
     }
 }
