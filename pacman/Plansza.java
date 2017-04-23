@@ -42,8 +42,8 @@ public class Plansza extends JFrame {
 	    return bimage;
 	}
 	
-	
-	public void launchFrame(int wysokosc, int szerokosc,char[][] punkty) throws InterruptedException{
+	//Funkcja tworzaca Frame na ktorym toczy sie rozgrywka
+	public void launchFrame(int wysokosc, int szerokosc,char[][] punkty,int[][] sciany ) throws InterruptedException{
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent we) {
 				System.exit(1);
@@ -66,7 +66,7 @@ public class Plansza extends JFrame {
 		button.setPreferredSize(new Dimension(100,40));
 		
 		//Obrazgra gra = new Obrazgra(wysokosc,szerokosc,punkty);
-		   final Obrazgra gra = new Obrazgra(wysokosc,szerokosc,punkty);
+		   final Obrazgra gra = new Obrazgra(wysokosc,szerokosc,punkty,sciany);
 		   
 			//dodawanie komponentow do panelu
 			mainpanel.add(wynik,BorderLayout.WEST);

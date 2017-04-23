@@ -11,7 +11,10 @@ import static pacman.Config.getData;
 public class Odczytplanszy {
 	
 	public String tabela;
+	private int wysokosc;
+	private int szerokosc;
 	
+	//Funkcja zwracająca wysokość i szerokość planszy
 	public int[] odczytparametrow() throws IOException{
 	
 		int[] parametry = new int[2];
@@ -25,12 +28,12 @@ public class Odczytplanszy {
 		return parametry;
 	}
 
-	
+	//Funkcja odczytujaca plansze z pliku tekstowego i zwracajaca ja w postaci tabeli
 	public char[][] odczytplanszy() throws IOException {
 		
 		int[] szerokoscwysokosc=this.odczytparametrow();
-		int wysokosc=szerokoscwysokosc[1];
-		int szerokosc=szerokoscwysokosc[0];
+		wysokosc=szerokoscwysokosc[1];
+		szerokosc=szerokoscwysokosc[0];
 		
 
 		FileReader filer = new FileReader(getData("plikPoziom"));
@@ -66,12 +69,51 @@ public class Odczytplanszy {
 
 		buffr.close();
 		return punkty;
-		
-		
-		
 		}
-	}
+
 	
+	//Funkcja odczytujaca miejsca wystepowania scian
+	public int[][] okreslaniePozycjiScian(char punkty[][])
+	{
+		int i=0;
+		int j=0;
+		int liczbaScian=0;
+		
+		 for(int k =0; k<szerokosc*wysokosc; k++) {
+		    	if(punkty[i][j]=='-' || punkty[i][j]=='|' || punkty[i][j]=='x')
+				{
+		    		liczbaScian++;
+				}
+				
+		    	i++;
+		    	if(i==szerokosc)
+				  {
+					  i=0;
+					  j++;
+				  }
+		    }
+		 
+		 i=0;
+		 j=0;
+		int sciany[][] = new int[liczbaScian][2];
+		
+		 for(int k =0; k<liczbaScian;) {
+		    	if(punkty[i][j]=='-' || punkty[i][j]=='|' || punkty[i][j]=='x')
+				{
+		    		sciany[k][0]=32*i;
+		    		sciany[k++][1]=32*j;
+				}
+				
+		    	i++;
+		    	if(i==szerokosc)
+				  {
+					  i=0;
+					  j++;
+				  }
+		    }
+		return sciany;
+	}
+}
 		
 		
 
