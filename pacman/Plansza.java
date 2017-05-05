@@ -4,7 +4,6 @@ import java.awt.Image;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.EventQueue;
-import java.awt.Frame;
 import java.awt.Graphics2D;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -17,7 +16,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import static pacman.Config.getData;
 
-import java.util.concurrent.TimeUnit;
 
 @SuppressWarnings("serial")
 public class Plansza extends JFrame {

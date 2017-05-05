@@ -6,8 +6,8 @@ import javax.swing.*;
 public class OknoWyniki extends JFrame {
 
 
-    private JList list1;
     private JPanel panelWyniki;
+    private JTextArea textArea1;
 
     public OknoWyniki() {
 
@@ -19,4 +19,10 @@ public class OknoWyniki extends JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         setVisible(true);
+
+        LoadObjects loadObjects = new LoadObjects();
+
+
+
+
 }}

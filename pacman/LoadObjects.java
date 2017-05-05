@@ -1,45 +1,25 @@
 package pacman;
-
-import java.awt.Frame;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.util.Date;
+import java.io.BufferedReader;
+import java.io.FileReader;
 
 public class LoadObjects {
 
-	public static void main(String[] args) {
-		FileInputStream istream = null;
-		String tekst="";
-		Date date = null;
-		int i = 0;
-		Frame okno = null;
-		try {
-			istream = new FileInputStream("obiekty.sav");
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-		ObjectInputStream p;
-		try {
-			p = new ObjectInputStream(istream);
-			i = p.readInt();
-			try {
-				tekst = (String)p.readObject();
-				date = (Date)p.readObject();
-				okno = (Frame)p.readObject();
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
+		private static String pobierzWyniki(){
+			StringBuilder sb = new StringBuilder();
+			try (BufferedReader br = new BufferedReader(new FileReader("Configurations\\highscores.xml"))){
+				String currentLine;
+				while ((currentLine = br.readLine()) != null) {
+					sb.append(currentLine);
+				}
 			}
-			
-			istream.close(); 
-		} catch (IOException e) {
-			e.printStackTrace();
+			catch (Exception e){
+
+			}
+			return sb.toString();
 		}
-		okno.setVisible(true);
-		System.out.println(i);
-		System.out.println(tekst);
-		System.out.println(date.toString());
-	}
+
+
+
+
 
 }

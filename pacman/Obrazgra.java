@@ -9,84 +9,161 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.geom.AffineTransform;
-import java.awt.image.AffineTransformOp;
 
 import javax.swing.ImageIcon;
 
-//Klasa odpowiadająca za wyswietlanie  gry
+/**
+ * Główna makieta gry
+ */
 public class Obrazgra extends Canvas implements Runnable, KeyListener{
 	
-		//Obraz pionowej ściany
-	   private Image pion = null;
-		//Obraz pustego pola
-	   private Image pusto = null;
-	   //Obraz dwie sciany
-	   private Image skrzyzowanie = null;
-		//Obraz poziomej ściany
-	   private Image poziom = null;
-		//Obraz pacmana skierowanego w prawo
-	   private Image pacmanE = null;
-	   //Obraz pacmana skierowanego w lewo
-	   private Image pacmanW = null;
-	   //Obraz pacmana skierowanego do dołu
-	   private Image pacmanS = null;
-	   //Obraz pacmana skierowanego w dół
-	   private Image pacmanN = null;
-	   //Obraz duszka
-	   private Image duszek = null;
-	   //Obraz niebieskiego duszka
-	   private Image nduszek = null;
-	   //Obraz Obraz do podwójnego buforowania
-	   private Image offscreen = null;
-	   //Obraz pionowej ściany
-	   private Graphics offscreeng = null;
-	   //szerokosc planszy
-	   private int szerokosc=0;
-	   //wysokosc planszy
-	   private int wysokosc=0;
-	   //Wspolrzedne scian
-	   private int[][] sciany;
-	   //zobrazowanie planszy wejsciowej w tablicy charow
-	   private char[][] punkty;
-	   //Współrzędna X pacmana
-	   private int pacX=-1;
-	   //Współrzędna Y pacmana
-	   private int pacY=-1;
-	   //Szybkosc ruchu pacmana
-	   private int szybkosc=2;
-	   //Kierunek ruch pacmana	   
-	   private char kierunek='a';
-	   //Poprzedni kierunek ruch pacmana
-	   private char popKierunek='a';
-	   //Nastepny kierunek ruch pacmana
-	   private char nasKierunek='a';
+	/**
+     * Obraz pionowej ściany
+     */
+    private Image pion = null;
+    /**
+     * Obraz pustego pola
+     */
+    private Image pusto = null;
+    /**
+     * Obraz poziomej ściany
+     */
+    private Image poziom = null;
+    /**
+     * Obraz pacmana skierowanego w prawo
+     */
+    private Image pacmanE = null;
+    /**
+     * Obraz pacmana skierowanego w lewo
+     */
+    private Image pacmanW = null;
+    /**
+     * Obraz pacmana skierowanego do dołu
+     */
+    private Image pacmanS = null;
+    /**
+     * Obraz pacmana skierowanego w dół
+     */
+    private Image pacmanN = null;
+    /**
+     * Obraz duszka
+     */
+    private Image duszek = null;
+    /**
+     * Obraz niebieskiego duszka
+     */
+    private Image nduszek = null;
+    /**
+     * Obraz Obraz do podwójnego buforowania
+     */
+    private Image offscreen = null;
+    /**
+     * Obraz pionowej ściany
+     */
+    private Graphics offscreeng = null;
+    /**
+     * Szerokosc planszy
+     */
+    private int szerokosc=0;
+    /**
+     * wysokosc planszy
+     */
+    private int wysokosc=0;
+    /**
+     * Zobrazowanie planszy wejsciowej w tablicy charow
+     */
+    private char[][] punkty;
+    /**
+     * Współrzędna X pacmana
+     */
+    private int pacX=-1;
+    /**
+     * Współrzędna Y pacmana
+     */
+    private int pacY=-1;
+    /**
+	  * Obraz dwie sciany
+	  */
+    private Image skrzyzowanie = null;
+    /**
+	  * Wspolrzedne scian
+	  */
+	private int[][] sciany;
+	/**
+	  *Szybkosc ruchu pacmana
+	  */ 
+	private int szybkosc=2;
+	/**
+	  * Kierunek ruch pacmana
+	  */   
+	private char kierunek='a';
+	/**
+	  * Poprzedni kierunek ruch pacmana
+	  */
+	private char popKierunek='a';
+	/**
+	  * Nastepny kierunek ruch pacmana
+	  */  
+	private char nasKierunek='a';
 	   
 	   
-	   //Konstruktor podczas którego między innymi ładowane są obrazki
+	 /**
+     * Konstruktor podczas którego między innymi ładowane są obrazki
+     * @param wysokosc Wysokość
+     * @param szerokosc Szerokość
+     * @param punkty  Punkty służące do rysowania planszy za pomocą obrazków
+     */
 	   Obrazgra(int wysokosc,int szerokosc,char[][] punkty,int[][] sciany) {
 	        
    
-	    	//odczyt obrazkow z plikow
-	    	Image obraz0 = new ImageIcon(getData("Pusto")).getImage();
-			pusto = obraz0;
-			Image obraz02 = new ImageIcon(getData("Pion")).getImage();
-			pion = obraz02;
-			Image obraz03 = new ImageIcon(getData("Poziom")).getImage();
-			poziom = obraz03;
-			Image obraz04 = new ImageIcon(getData("Pacman")).getImage();
-			pacmanE = obraz04;
-			Image obraz041 = new ImageIcon(getData("PacmanW")).getImage();
-			pacmanW = obraz041;
-			Image obraz042 = new ImageIcon(getData("PacmanS")).getImage();
-			pacmanS = obraz042;
-			Image obraz043 = new ImageIcon(getData("PacmanN")).getImage();
-			pacmanN = obraz043;
-			Image obraz05 = new ImageIcon(getData("Duszek")).getImage();
-			duszek = obraz05;
-			Image obraz06 = new ImageIcon(getData("niebieskiDuszek")).getImage();
-			nduszek = obraz06;
+	       /**
+	         * Odczyt obrazka odpowiadającego pustemu polu na planszy
+	         */
+	        Image obraz0 = new ImageIcon(getData("Pusto")).getImage();
+	        this.pusto = obraz0;
+	        /**
+	         * Odczyt obrazka odpowiadającego pionowej ściance na planszy
+	         */
+	        Image obraz02 = new ImageIcon(getData("Pion")).getImage();
+	        this.pion = obraz02;
+	        /**
+	         * Odczyt obrazka odpowiadającego poziomej ściance na planszy
+	         */
+	        Image obraz03 = new ImageIcon(getData("Poziom")).getImage();
+	        this.poziom = obraz03;
+	        /**
+	         * Odczyt obrazka odpowiadającego pacmanowi skierowanemu w prawo na planszy
+	         */
+	        Image obraz04 = new ImageIcon(getData("Pacman")).getImage();
+	        this.pacmanE = obraz04;
+	        /**
+	         * Odczyt obrazka odpowiadającego pacmanowi skierowanemu w lewo na planszy
+	         */
+	        Image obraz041 = new ImageIcon(getData("PacmanW")).getImage();
+	        this.pacmanW = obraz041;
+	        /**
+	         * Odczyt obrazka odpowiadającego pacmanowi skierowanemu w dół na planszy
+	         */
+	        Image obraz042 = new ImageIcon(getData("PacmanS")).getImage();
+	        this.pacmanS = obraz042;
+	        /**
+	         * Odczyt obrazka odpowiadającego pacmanowi skierowanemu w górę na planszy
+	         */
+	        Image obraz043 = new ImageIcon(getData("PacmanN")).getImage();
+	        this.pacmanN = obraz043;
+	        /**
+	         * Odczyt obrazka odpowiadającego duszkowi na planszy
+	         */
+	        Image obraz05 = new ImageIcon(getData("Duszek")).getImage();
+	        this.duszek = obraz05;
+	        /**
+	         * Odczyt obrazka odpowiadającego niebieskiemu duszkowi na planszy
+	         */
+	        Image obraz06 = new ImageIcon(getData("niebieskiDuszek")).getImage();
+	        this.nduszek = obraz06;
+	        /**
+	         * Odczyt obrazka odpowiadającego podwojnej scianie na planszy
+	         */
 			Image obraz07 = new ImageIcon(getData("skrzyzowanie")).getImage();
 			skrzyzowanie = obraz07;
 		   
@@ -99,35 +176,69 @@ public class Obrazgra extends Canvas implements Runnable, KeyListener{
 
 	    }
 
-	   //Preferowana szerokość planszy
+	   /**
+	     * Ustawianie domyślnego wymiaru planszy
+	     * @return Domyślny wymiar
+	     */
 	    public Dimension getPreferredSize() {
 	        return new Dimension(szerokosc*32, wysokosc*32);
 	    }
-
+	    /**
+	     * Dodaje domyślny wymiar
+	     */
 	    public void addNotify() {
 	        super.addNotify();
 	        offscreen = createImage(getPreferredSize().width, getPreferredSize().height);
 	        offscreeng = offscreen.getGraphics();
 	    }
-	    
+	    /**
+	     * Odświeża wygląd planszy
+	     * @param g Chwilowa wyświetlona grafika
+	     */
 	    public void update(Graphics g) {
 	    	paint(g);
 	    }
-	    
+	    /**
+	     * Rysuje obrazek
+	     * @param g Chwilowa wyświetlona grafika
+	     */
 	    public void paint(Graphics g) {
 	    	g.drawImage(offscreen, 0, 0, this);
 	    	
 	}
 	    
-	    //Tworzenie obrazu bedacego plansza odczytana z pliku tekstowego
+	    /**
+	     * Tworzenie obrazu bedacego plansza odczytana z pliku tekstowego
+	     */
 	    void zaladujplansze() {
 
-	    	Image pacman10=pacmanE;
-    		Image pusto1=pusto;
-    		Image pion1=pion;
-    		Image poziom1=poziom;    
-    		Image duszek1=duszek;
-    		Image nduszek1=nduszek;
+	        /**
+	         * Obrazek przedstawiający pacmana
+	         */
+	        Image pacman10=pacmanE;
+	        /**
+	         * Obrazek przedstawiający puste miejsce
+	         */
+	        Image pusto1=pusto;
+	        /**
+	         * Obrazek przedstawiający pionową ściankę
+	         */
+	        Image pion1=pion;
+	        /**
+	         * Obrazek przedstawiający poziomą ściankę
+	         */
+	        Image poziom1=poziom;
+	        /**
+	         * Obrazek przedstawiający duszka
+	         */
+	        Image duszek1=duszek;
+	        /**
+	         * Obrazek przedstawiający niebieskiego duszka
+	         */
+	        Image nduszek1=nduszek;
+	        /**
+	         * Obrazek przedstawiający podwojna sciane duszka
+	         */
     		Image x=skrzyzowanie;
     		
     		
@@ -139,8 +250,9 @@ public class Obrazgra extends Canvas implements Runnable, KeyListener{
 	    	int h =32;
 	        int i=0;
 			int j=0;
-			int q=0;
-			//rysowanie planszy z tablicy odczytanej z pliku tekstowego
+	        /**
+	         * Rysowanie planszy z tablicy odczytanej z pliku tekstowego
+	         */
 			  for(int k =0; k<szerokosc*wysokosc; ++k) {
 			    	if(punkty[i][j]==' ')
 					{
@@ -189,7 +301,9 @@ public class Obrazgra extends Canvas implements Runnable, KeyListener{
 	    }
 	    
 	    
-	    //Uaktualnienie obrazu wyświetlaniego na ekranie
+	    /**
+	     * Uaktualnienie obrazu wyświetlaniego na ekranie
+	     */
 	    void updateOffscreen() {
     		if(pacX%32!=0 || pacY%32!=0)
     		{
@@ -259,7 +373,9 @@ public class Obrazgra extends Canvas implements Runnable, KeyListener{
 	    
 	    public Thread kicker = null;
 	    
-	    //Czekanie
+	    /**
+	     * Czekanie na ruch
+	     */
 	    void sleeep() {
 	        try {
 	            Thread.sleep(15);
@@ -267,7 +383,9 @@ public class Obrazgra extends Canvas implements Runnable, KeyListener{
 	        }
 	    }
 
-	    
+	    /**
+	     * Ruch pacmana
+	     */
 	    public void run() {
 	    	while (kicker == Thread.currentThread()) {
 	    		if(pacX==-1 && pacY==-1)
@@ -283,7 +401,10 @@ public class Obrazgra extends Canvas implements Runnable, KeyListener{
 	        }
 	    }
 
-	    //Nacisniecie przycisku na klawiaturze
+
+	    /**
+	     * Nacisniecie przycisku na klawiaturze
+	     */
 		@Override
 		public void keyPressed(KeyEvent arg0) {
 			displayInfo(arg0);
@@ -304,7 +425,10 @@ public class Obrazgra extends Canvas implements Runnable, KeyListener{
 
 	    
 	    
-//Odczyt zdarzenia, przypisanie jego symbolicznej wartosci do zmiennej
+		 /**
+	     * Odczyt zdarzenia, przypisanie jego symbolicznej wartosci do zmiennej
+	     * @param e Zdarzenie
+	     */
 private void displayInfo(KeyEvent e){
     
 	   int keyCode = e.getKeyCode();

@@ -1,19 +1,34 @@
-
 package pacman;//
-//Source code recreated from a .class file by IntelliJ IDEA
-//(powered by Fernflower decompiler)
+// Source code recreated from a .class file by IntelliJ IDEA
+// (powered by Fernflower decompiler)
 //
 
-import pacman.Odczytplanszy;
-
+/**
+ * Klasa odpowiadająca za odczyt planszy
+ */
 public class Game {
- private Odczytplanszy odczyt;
- public int width;
- public int height;
+    /**
+     * Metoda wczytująca wymiary planszy
+     */
+    private Odczytplanszy odczyt;
+    /**
+     * Szerokość planszy
+     */
+    public int width;
+    /**
+     * Wysokość planszy
+     */
+    public int height;
 
- public Game(String title, int width, int height) {
-     this.width = width;
-     this.height = height;
-     this.odczyt = new Odczytplanszy();
- }
+    /**
+     * Wyświetla główną planszę gry
+     * @param title Tytuł okna gry
+     * @param width Szerokość okna gry
+     * @param height Wysokość okna gry
+     */
+    public Game(String title, int width, int height) {
+        this.width = width;
+        this.height = height;
+        this.odczyt = new Odczytplanszy();
+    }
 }

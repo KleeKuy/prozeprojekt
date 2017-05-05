@@ -14,7 +14,9 @@ public class Odczytplanszy {
 	private int wysokosc;
 	private int szerokosc;
 	
-	//Funkcja zwracająca wysokość i szerokość planszy
+	 /**
+     * Funkcja zwracająca wysokość i szerokość planszy
+     */
 	public int[] odczytparametrow() throws IOException{
 	
 		int[] parametry = new int[2];
@@ -28,7 +30,9 @@ public class Odczytplanszy {
 		return parametry;
 	}
 
-	//Funkcja odczytujaca plansze z pliku tekstowego i zwracajaca ja w postaci tabeli
+	 /**
+     * Funkcja odczytujaca plansze z pliku tekstowego i zwracajaca ja w postaci tabeli
+     */
 	public char[][] odczytplanszy() throws IOException {
 		
 		int[] szerokoscwysokosc=this.odczytparametrow();
@@ -72,7 +76,10 @@ public class Odczytplanszy {
 		}
 
 	
-	//Funkcja odczytujaca miejsca wystepowania scian
+
+	 /**
+     * Funkcja odczytujaca miejsca wystepowania scian
+     */
 	public int[][] okreslaniePozycjiScian(char punkty[][])
 	{
 		int i=0;
