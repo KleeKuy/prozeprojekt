@@ -107,8 +107,8 @@ public class Odczytplanszy {
 		 for(int k =0; k<liczbaScian;) {
 		    	if(punkty[i][j]=='-' || punkty[i][j]=='|' || punkty[i][j]=='x')
 				{
-		    		sciany[k][0]=32*i;
-		    		sciany[k++][1]=32*j;
+		    		sciany[k][0]=i*32;
+		    		sciany[k++][1]=j*32;
 				}
 				
 		    	i++;

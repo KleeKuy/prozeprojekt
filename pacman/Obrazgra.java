@@ -7,10 +7,16 @@ import java.awt.Canvas;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Rectangle;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 import javax.swing.ImageIcon;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 /**
  * Główna makieta gry
@@ -30,21 +36,37 @@ public class Obrazgra extends Canvas implements Runnable, KeyListener{
      */
     private Image poziom = null;
     /**
-     * Obraz pacmana skierowanego w prawo
+     * Obraz pacmana skierowanego w prawo nie skalowany
      */
     private Image pacmanE = null;
     /**
-     * Obraz pacmana skierowanego w lewo
+     * Obraz pacmana skierowanego w lewo nie skalowany
      */
     private Image pacmanW = null;
     /**
-     * Obraz pacmana skierowanego do dołu
+     * Obraz pacmana skierowanego do dołu nie skalowany
      */
     private Image pacmanS = null;
     /**
-     * Obraz pacmana skierowanego w dół
+     * Obraz pacmana skierowanego w dół nie skalowany
      */
     private Image pacmanN = null;
+    /**
+     * Obraz pacmana skierowanego w prawo
+     */
+    private Image pacmanEe = null;
+    /**
+     * Obraz pacmana skierowanego w lewo
+     */
+    private Image pacmanWw = null;
+    /**
+     * Obraz pacmana skierowanego do dołu
+     */
+    private Image pacmanSs = null;
+    /**
+     * Obraz pacmana skierowanego w dół
+     */
+    private Image pacmanNn = null;
     /**
      * Obraz duszka
      */
@@ -105,6 +127,18 @@ public class Obrazgra extends Canvas implements Runnable, KeyListener{
 	  * Nastepny kierunek ruch pacmana
 	  */  
 	private char nasKierunek='a';
+	/**
+	  * Wysokosc pojedynczego pola
+	  */
+	private int wys = 32;
+	/**
+	  * Szerokosc pojedynczego pola
+	  */
+	private int szer = 32;
+	/**
+	  * Czy okno zmienilo rozmiary
+	  */
+	private boolean zmianaRozmiarow = false;
 	   
 	   
 	 /**
@@ -119,58 +153,66 @@ public class Obrazgra extends Canvas implements Runnable, KeyListener{
 	       /**
 	         * Odczyt obrazka odpowiadającego pustemu polu na planszy
 	         */
-	        Image obraz0 = new ImageIcon(getData("Pusto")).getImage();
-	        this.pusto = obraz0;
+		    pusto = new ImageIcon(getData("Pusto")).getImage();
 	        /**
 	         * Odczyt obrazka odpowiadającego pionowej ściance na planszy
 	         */
-	        Image obraz02 = new ImageIcon(getData("Pion")).getImage();
-	        this.pion = obraz02;
+		    pion= new ImageIcon(getData("Pion")).getImage();
 	        /**
 	         * Odczyt obrazka odpowiadającego poziomej ściance na planszy
 	         */
-	        Image obraz03 = new ImageIcon(getData("Poziom")).getImage();
-	        this.poziom = obraz03;
+		    poziom = new ImageIcon(getData("Poziom")).getImage();
 	        /**
 	         * Odczyt obrazka odpowiadającego pacmanowi skierowanemu w prawo na planszy
 	         */
-	        Image obraz04 = new ImageIcon(getData("Pacman")).getImage();
-	        this.pacmanE = obraz04;
+		    pacmanE = new ImageIcon(getData("Pacman")).getImage();
 	        /**
 	         * Odczyt obrazka odpowiadającego pacmanowi skierowanemu w lewo na planszy
 	         */
-	        Image obraz041 = new ImageIcon(getData("PacmanW")).getImage();
-	        this.pacmanW = obraz041;
+		    pacmanW = new ImageIcon(getData("PacmanW")).getImage();
 	        /**
 	         * Odczyt obrazka odpowiadającego pacmanowi skierowanemu w dół na planszy
 	         */
-	        Image obraz042 = new ImageIcon(getData("PacmanS")).getImage();
-	        this.pacmanS = obraz042;
+		    pacmanS = new ImageIcon(getData("PacmanS")).getImage();
 	        /**
 	         * Odczyt obrazka odpowiadającego pacmanowi skierowanemu w górę na planszy
 	         */
-	        Image obraz043 = new ImageIcon(getData("PacmanN")).getImage();
-	        this.pacmanN = obraz043;
+		    pacmanN = new ImageIcon(getData("PacmanN")).getImage();
 	        /**
 	         * Odczyt obrazka odpowiadającego duszkowi na planszy
 	         */
-	        Image obraz05 = new ImageIcon(getData("Duszek")).getImage();
-	        this.duszek = obraz05;
+		    duszek= new ImageIcon(getData("Duszek")).getImage();
 	        /**
 	         * Odczyt obrazka odpowiadającego niebieskiemu duszkowi na planszy
 	         */
-	        Image obraz06 = new ImageIcon(getData("niebieskiDuszek")).getImage();
-	        this.nduszek = obraz06;
+		    nduszek = new ImageIcon(getData("niebieskiDuszek")).getImage();
 	        /**
 	         * Odczyt obrazka odpowiadającego podwojnej scianie na planszy
 	         */
-			Image obraz07 = new ImageIcon(getData("skrzyzowanie")).getImage();
-			skrzyzowanie = obraz07;
+		    skrzyzowanie = new ImageIcon(getData("skrzyzowanie")).getImage();
 		   
 			this.szerokosc=szerokosc;
 			this.wysokosc=wysokosc;
 			this.punkty=punkty;
 			this.sciany=sciany;
+			
+			int i=0;
+			int j=0;
+			  for(int k =0; k<szerokosc*wysokosc; ++k) {
+					if(punkty[i][j]=='p')
+					{
+						pacX=i*szer;
+						pacY=j*wys;
+					}	
+					i++;
+			    	if(i==szerokosc)
+					  {
+						  i=0;
+						  j++;
+					  }
+	
+			    }
+			
 			
 			addKeyListener(this);
 
@@ -181,7 +223,20 @@ public class Obrazgra extends Canvas implements Runnable, KeyListener{
 	     * @return Domyślny wymiar
 	     */
 	    public Dimension getPreferredSize() {
-	        return new Dimension(szerokosc*32, wysokosc*32);
+	        return new Dimension(szerokosc*szer, wysokosc*wys);
+	    }
+	    
+	    
+	    void updateOffscreenSize(final int w, final int h) {
+	    	if (kicker != null) {
+	    		Thread k = kicker;
+	    		kicker = null;
+	    		k.interrupt();
+	    	}
+	    	offscreen = createImage(w, h);
+	        offscreeng = offscreen.getGraphics();
+	        zmianaRozmiarow(w,h);
+	        (kicker = new Thread(this)).start();
 	    }
 	    /**
 	     * Dodaje domyślny wymiar
@@ -215,39 +270,38 @@ public class Obrazgra extends Canvas implements Runnable, KeyListener{
 	        /**
 	         * Obrazek przedstawiający pacmana
 	         */
-	        Image pacman10=pacmanE;
+	        Image pacman10=pacmanE.getScaledInstance(szer, wys, Image.SCALE_DEFAULT);
 	        /**
 	         * Obrazek przedstawiający puste miejsce
 	         */
-	        Image pusto1=pusto;
+	        Image pusto1=pusto.getScaledInstance(szer, wys, Image.SCALE_DEFAULT);
 	        /**
 	         * Obrazek przedstawiający pionową ściankę
 	         */
-	        Image pion1=pion;
+	        Image pion1=pion.getScaledInstance(szer, wys, Image.SCALE_DEFAULT);
 	        /**
 	         * Obrazek przedstawiający poziomą ściankę
 	         */
-	        Image poziom1=poziom;
+	        Image poziom1=poziom.getScaledInstance(szer, wys, Image.SCALE_DEFAULT);
 	        /**
 	         * Obrazek przedstawiający duszka
 	         */
-	        Image duszek1=duszek;
+	        Image duszek1=duszek.getScaledInstance(szer, wys, Image.SCALE_DEFAULT);
 	        /**
 	         * Obrazek przedstawiający niebieskiego duszka
 	         */
-	        Image nduszek1=nduszek;
+	        Image nduszek1=nduszek.getScaledInstance(szer, wys, Image.SCALE_DEFAULT);
 	        /**
 	         * Obrazek przedstawiający podwojna sciane duszka
 	         */
-    		Image x=skrzyzowanie;
+    		Image x=skrzyzowanie.getScaledInstance(szer, wys, Image.SCALE_DEFAULT);
     		
-    		
-    		while(pusto.getHeight(null)==-1 || pion.getHeight(null)==-1 || poziom.getHeight(null)==-1 || pacmanE.getHeight(null)==-1 || duszek.getHeight(null)==-1 || nduszek.getHeight(null)==-1)
-        		{
-        			
-        		}
-	    	int w=32;
-	    	int h =32;
+    		while(pacman10.getHeight(null)==-1 || pusto1.getHeight(null)==-1 || pion1.getHeight(null)==-1 || poziom1.getHeight(null)==-1 || duszek1.getHeight(null)==-1 || nduszek1.getHeight(null)==-1 || x.getHeight(null)==-1)
+       		{
+       		sleeep();
+       		}
+	    	int w=szer;
+	    	int h =wys;
 	        int i=0;
 			int j=0;
 	        /**
@@ -275,9 +329,10 @@ public class Obrazgra extends Canvas implements Runnable, KeyListener{
 					}
 					else if(punkty[i][j]=='p')
 					{
-						offscreeng.drawImage(pacman10, w*i, h*j, null);
-						pacX=i*32;
-						pacY=j*32;
+						offscreeng.drawImage(pusto1, w*i, h*j, null);
+					//	offscreeng.drawImage(pacman10, w*i, h*j, null);
+					//	pacX=i*szer;
+					//	pacY=j*wys;
 
 					}	
 					else if(punkty[i][j]=='d')
@@ -305,7 +360,8 @@ public class Obrazgra extends Canvas implements Runnable, KeyListener{
 	     * Uaktualnienie obrazu wyświetlaniego na ekranie
 	     */
 	    void updateOffscreen() {
-    		if(pacX%32!=0 || pacY%32!=0)
+	    	   		
+    		if(pacX%szer!=0 || pacY%wys!=0)
     		{
     			if(popKierunek!=kierunek)
     		nasKierunek=kierunek;
@@ -325,43 +381,43 @@ public class Obrazgra extends Canvas implements Runnable, KeyListener{
 	        case 'N':
 
 	        	for(int i=0; i<sciany.length; i++)
-	        	if(sciany[i][0]==pacX && sciany[i][1]==pacY-32)
+	        	if(sciany[i][0]==pacX && sciany[i][1]==pacY-wys)
 	        	{
 			    	przeszkoda = true;
 	        	}
 	        	if(przeszkoda==false)	
 	        		pacY=pacY-szybkosc;
-	        	offscreeng.drawImage(pacmanN, pacX, pacY,null);    	
+	        	offscreeng.drawImage(pacmanNn, pacX, pacY,null);    	
 	        	break;
 	        case 'S':
 	        	for(int i=0; i<sciany.length; i++)
-		        	if(sciany[i][0]==pacX && sciany[i][1]==pacY+32)
+		        	if(sciany[i][0]==pacX && sciany[i][1]==pacY+wys)
 		        	{
 				    	przeszkoda = true;
 		        	}
 		        	if(przeszkoda==false)
 		        		pacY=pacY+szybkosc;
-		    	offscreeng.drawImage(pacmanS, pacX, pacY,null);
+		    	offscreeng.drawImage(pacmanSs, pacX, pacY,null);
 	            break;
 	        case 'W':
 	        	for(int i=0; i<sciany.length; i++)
-		        	if(sciany[i][0]==pacX-32 && sciany[i][1]==pacY)
+		        	if(sciany[i][0]==pacX-szer && sciany[i][1]==pacY)
 		        	{
 				    	przeszkoda = true;
 		        	}
 		        	if(przeszkoda==false)	
 		        		pacX=pacX-szybkosc;
-		    	offscreeng.drawImage(pacmanW, pacX, pacY,null);
+		    	offscreeng.drawImage(pacmanWw, pacX, pacY,null);
 	            break;
 	        case 'E':
 	        	for(int i=0; i<sciany.length; i++)
-		        	if(sciany[i][0]==pacX+32 && sciany[i][1]==pacY)
+		        	if(sciany[i][0]==pacX+szer && sciany[i][1]==pacY)
 		        	{
 				    	przeszkoda = true;
 		        	}
 		        	if(przeszkoda==false)	
 		        		pacX=pacX+szybkosc;
-		    	offscreeng.drawImage(pacmanE, pacX, pacY,null);
+		    	offscreeng.drawImage(pacmanEe, pacX, pacY,null);
 	            break;
 	     }
  
@@ -388,9 +444,10 @@ public class Obrazgra extends Canvas implements Runnable, KeyListener{
 	     */
 	    public void run() {
 	    	while (kicker == Thread.currentThread()) {
-	    		if(pacX==-1 && pacY==-1)
+	    		if(pacX==-1 && pacY==-1 || zmianaRozmiarow == true)
 		    	{
 		    		zaladujplansze();
+		    		zmianaRozmiarow = false;
 		    	}
 		    	else
 		    	{
@@ -450,7 +507,52 @@ private void displayInfo(KeyEvent e){
  
 }
 
+private void zmianaRozmiarow(int w, int h)
+{
+	 for(int k =0; k<sciany.length; k++)
+	 {
+ 		sciany[k][0]=sciany[k][0]/szer;
+ 		sciany[k][1]=sciany[k][1]/wys;
+	 }
+		pacX=pacX/szer;
+		pacY=pacY/wys;
+		
+
+		szer=(w-18)/szerokosc;
+		while(szer%szybkosc!=0)
+			szer--;
+		wys=(h-83)/wysokosc;
+		while(wys%szybkosc!=0)
+			wys--;
+
+		zmianaRozmiarow = true;
+		pacmanNn=pacmanN.getScaledInstance(szer, wys, Image.SCALE_DEFAULT);
+		pacmanSs=pacmanS.getScaledInstance(szer, wys, Image.SCALE_DEFAULT);
+		pacmanWw=pacmanW.getScaledInstance(szer, wys, Image.SCALE_DEFAULT);
+		pacmanEe=pacmanE.getScaledInstance(szer, wys, Image.SCALE_DEFAULT);
+		
+
+		 for(int k =0; k<sciany.length; k++)
+		 {
+	 		sciany[k][0]=sciany[k][0]*szer;
+	 		sciany[k][1]=sciany[k][1]*wys;
+
+		 }
+	 		pacX=pacX*szer;
+	 		pacY=pacY*wys;
+	 		
+			while(pacX%szer!=0)
+				pacX--;
+			while(pacY%wys!=0)
+				pacY--;
+
+
 }
+
+
+}
+
+
 	
 	
 

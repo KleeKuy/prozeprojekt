@@ -7,6 +7,7 @@ import java.awt.EventQueue;
 import java.awt.Graphics2D;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
@@ -18,7 +19,7 @@ import static pacman.Config.getData;
 
 
 @SuppressWarnings("serial")
-public class Plansza extends JFrame {
+public class Plansza extends JFrame{
 
 	
 	public static BufferedImage toBufferedImage(Image img)
@@ -65,21 +66,17 @@ public class Plansza extends JFrame {
 		
 		//Obrazgra gra = new Obrazgra(wysokosc,szerokosc,punkty);
 		   final Obrazgra gra = new Obrazgra(wysokosc,szerokosc,punkty,sciany);
-		   
+		   addComponentListener(new ComponentAdapter() {
+	        	public void componentResized(ComponentEvent ce) {
+	        		gra.updateOffscreenSize(ce.getComponent().getWidth(), ce.getComponent().getHeight());
+	        	}
+	        });
 			//dodawanie komponentow do panelu
 			mainpanel.add(wynik,BorderLayout.WEST);
 			mainpanel.add(zycia,BorderLayout.CENTER);
 			mainpanel.add(button,BorderLayout.EAST);
 			mainpanel.add(gra,BorderLayout.SOUTH);
 			add(mainpanel);
-			//gra.zaladujplansze();
-			
-	        this.addComponentListener(new ComponentAdapter() {
-	        	public void componentResized(ComponentEvent ce) {
-	        		//gra.updateOffscreenSize(ce.getComponent().getWidth(), ce.getComponent().getHeight());
-	        	}
-	        });
-		
 	
 		
 		pack();
@@ -91,4 +88,7 @@ public class Plansza extends JFrame {
 		(gra.kicker = new Thread(gra)).start();
 
 	
-}}
+}
+
+		
+	}
