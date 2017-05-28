@@ -32,6 +32,10 @@ public class Obrazgra extends Canvas implements Runnable, KeyListener{
      */
     private Image pusto = null;
     /**
+     * Obraz pustego pola
+     */
+    private Image kropka = null;
+    /**
      * Obraz poziomej ściany
      */
     private Image poziom = null;
@@ -75,6 +79,38 @@ public class Obrazgra extends Canvas implements Runnable, KeyListener{
      * Obraz niebieskiego duszka
      */
     private Image nduszek = null;
+    
+    
+    //TODO TU ZACZYNAJA SIE OBRAZY KTORYCH ROZMIARY SA SKALOWANE, dopisze potem xd
+    private Image pacman10=null;
+    /**
+     * Obrazek przedstawiający puste miejsce
+     */
+    private Image pusto1=null;
+    /**
+     * Obrazek przedstawiający pionową ściankę
+     */
+    private Image pion1=null;
+    /**
+     * Obrazek przedstawiający poziomą ściankę
+     */
+    private Image poziom1=null;
+    /**
+     * Obrazek przedstawiający duszka
+     */
+    private Image duszek1=null;
+    /**
+     * Obrazek przedstawiający niebieskiego duszka
+     */
+    private Image nduszek1=null;
+    /**
+     * Obrazek przedstawiający podwojna sciane duszka
+     */
+    private Image x=null;
+	/**
+     * Obrazek przedstawiający kropke
+     */
+    private	Image kropka1=null;
     /**
      * Obraz Obraz do podwójnego buforowania
      */
@@ -139,6 +175,10 @@ public class Obrazgra extends Canvas implements Runnable, KeyListener{
 	  * Czy okno zmienilo rozmiary
 	  */
 	private boolean zmianaRozmiarow = false;
+	/**
+	  * Obiekt duszek
+	  */
+	private Duszek duszekk = null;
 	   
 	   
 	 /**
@@ -154,7 +194,11 @@ public class Obrazgra extends Canvas implements Runnable, KeyListener{
 	         * Odczyt obrazka odpowiadającego pustemu polu na planszy
 	         */
 		    pusto = new ImageIcon(getData("Pusto")).getImage();
-	        /**
+		    /**
+	         * Odczyt obrazka odpowiadającego pustemu polu na planszy
+	         */
+		    kropka = new ImageIcon(getData("Kropka")).getImage();
+	       /**
 	         * Odczyt obrazka odpowiadającego pionowej ściance na planszy
 	         */
 		    pion= new ImageIcon(getData("Pion")).getImage();
@@ -215,6 +259,38 @@ public class Obrazgra extends Canvas implements Runnable, KeyListener{
 			
 			
 			addKeyListener(this);
+			
+			pacman10=pacmanE;
+	        /**
+	         * Obrazek przedstawiający puste miejsce
+	         */
+	        pusto1=pusto;
+	        /**
+	         * Obrazek przedstawiający pionową ściankę
+	         */
+	        pion1=pion;
+	        /**
+	         * Obrazek przedstawiający poziomą ściankę
+	         */
+	        poziom1=poziom;
+	        /**
+	         * Obrazek przedstawiający duszka
+	         */
+	        duszek1=duszek;
+	        /**
+	         * Obrazek przedstawiający niebieskiego duszka
+	         */
+	        nduszek1=nduszek;
+	        /**
+	         * Obrazek przedstawiający podwojna sciane
+	         */
+    		x=skrzyzowanie;
+	        /**
+	         * Obrazek przedstawiający kropke
+	         */
+    		kropka1=kropka;
+    		
+    		
 
 	    }
 
@@ -233,6 +309,7 @@ public class Obrazgra extends Canvas implements Runnable, KeyListener{
 	    		kicker = null;
 	    		k.interrupt();
 	    	}
+
 	    	offscreen = createImage(w, h);
 	        offscreeng = offscreen.getGraphics();
 	        zmianaRozmiarow(w,h);
@@ -263,43 +340,53 @@ public class Obrazgra extends Canvas implements Runnable, KeyListener{
 	}
 	    
 	    /**
-	     * Tworzenie obrazu bedacego plansza odczytana z pliku tekstowego
+	     * Tworzenie wyswielanej planszy
 	     */
 	    void zaladujplansze() {
 
+
+	    	
+	    	if(zmianaRozmiarow == true)
+	    	{
 	        /**
 	         * Obrazek przedstawiający pacmana
 	         */
-	        Image pacman10=pacmanE.getScaledInstance(szer, wys, Image.SCALE_DEFAULT);
+	        pacman10=pacmanE.getScaledInstance(szer, wys, Image.SCALE_DEFAULT);
 	        /**
 	         * Obrazek przedstawiający puste miejsce
 	         */
-	        Image pusto1=pusto.getScaledInstance(szer, wys, Image.SCALE_DEFAULT);
+	        pusto1=pusto.getScaledInstance(szer, wys, Image.SCALE_DEFAULT);
 	        /**
 	         * Obrazek przedstawiający pionową ściankę
 	         */
-	        Image pion1=pion.getScaledInstance(szer, wys, Image.SCALE_DEFAULT);
+	        pion1=pion.getScaledInstance(szer, wys, Image.SCALE_DEFAULT);
 	        /**
 	         * Obrazek przedstawiający poziomą ściankę
 	         */
-	        Image poziom1=poziom.getScaledInstance(szer, wys, Image.SCALE_DEFAULT);
+	        poziom1=poziom.getScaledInstance(szer, wys, Image.SCALE_DEFAULT);
 	        /**
 	         * Obrazek przedstawiający duszka
 	         */
-	        Image duszek1=duszek.getScaledInstance(szer, wys, Image.SCALE_DEFAULT);
+	        duszek1=duszek.getScaledInstance(szer, wys, Image.SCALE_DEFAULT);
 	        /**
 	         * Obrazek przedstawiający niebieskiego duszka
 	         */
-	        Image nduszek1=nduszek.getScaledInstance(szer, wys, Image.SCALE_DEFAULT);
+	        nduszek1=nduszek.getScaledInstance(szer, wys, Image.SCALE_DEFAULT);
 	        /**
-	         * Obrazek przedstawiający podwojna sciane duszka
+	         * Obrazek przedstawiający podwojna sciane 
 	         */
-    		Image x=skrzyzowanie.getScaledInstance(szer, wys, Image.SCALE_DEFAULT);
+    		x=skrzyzowanie.getScaledInstance(szer, wys, Image.SCALE_DEFAULT);
+	        /**
+	         * Obrazek przedstawiający kropke
+	         */
+    		kropka1=kropka.getScaledInstance(szer, wys, Image.SCALE_DEFAULT);
     		
-    		while(pacman10.getHeight(null)==-1 || pusto1.getHeight(null)==-1 || pion1.getHeight(null)==-1 || poziom1.getHeight(null)==-1 || duszek1.getHeight(null)==-1 || nduszek1.getHeight(null)==-1 || x.getHeight(null)==-1)
+    		while(pacman10.getHeight(null)==-1 || pusto1.getHeight(null)==-1 || pion1.getHeight(null)==-1 || poziom1.getHeight(null)==-1 || duszek1.getHeight(null)==-1 || nduszek1.getHeight(null)==-1 || x.getHeight(null)==-1 || kropka1.getHeight(null)==-1)
        		{
-       		sleeep();
+       		sleeep(); //TODO optymalniej to sie raczej da zrobic xd, soon^tm
        		}
+	    	}
+	    	
 	    	int w=szer;
 	    	int h =wys;
 	        int i=0;
@@ -310,6 +397,10 @@ public class Obrazgra extends Canvas implements Runnable, KeyListener{
 			  for(int k =0; k<szerokosc*wysokosc; ++k) {
 			    	if(punkty[i][j]==' ')
 					{
+			    		offscreeng.drawImage(kropka1, w*i, h*j, null);
+					}
+			    	else if(punkty[i][j]=='0')
+			    	{
 			    		offscreeng.drawImage(pusto1, w*i, h*j, null);
 					}
 					else if(punkty[i][j]=='|')
@@ -338,6 +429,8 @@ public class Obrazgra extends Canvas implements Runnable, KeyListener{
 					else if(punkty[i][j]=='d')
 					{
 						offscreeng.drawImage(duszek1, w*i, h*j, null);
+						duszekk = new Duszek(w*i,h*j, sciany);
+						punkty[i][j]=' ';
 
 					}
 					else if(punkty[i][j]=='n')
@@ -369,6 +462,8 @@ public class Obrazgra extends Canvas implements Runnable, KeyListener{
     		}
     		else
     		{
+    			punkty[pacX/szer][pacY/wys]='0';
+
     			if(nasKierunek!='a')
     			{
     			kierunek=nasKierunek;
@@ -420,8 +515,14 @@ public class Obrazgra extends Canvas implements Runnable, KeyListener{
 		    	offscreeng.drawImage(pacmanEe, pacX, pacY,null);
 	            break;
 	     }
- 
 	    		popKierunek=kierunek;
+	    		
+	    		//Ruch duszka
+	    		if(duszekk!=null || duszek!=null)
+	    		{
+	    		int pozDuszek[]=duszekk.droga(pacX,pacY);
+	    		offscreeng.drawImage(duszek, pozDuszek[0], pozDuszek[1],null);
+	    		}
 
 	    }
 	    
@@ -444,15 +545,9 @@ public class Obrazgra extends Canvas implements Runnable, KeyListener{
 	     */
 	    public void run() {
 	    	while (kicker == Thread.currentThread()) {
-	    		if(pacX==-1 && pacY==-1 || zmianaRozmiarow == true)
-		    	{
-		    		zaladujplansze();
+		     		zaladujplansze();
 		    		zmianaRozmiarow = false;
-		    	}
-		    	else
-		    	{
 		    		updateOffscreen();
-		    	}
 	        	repaint();
 	    		sleeep();
 	        }
