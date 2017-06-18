@@ -2,8 +2,6 @@ package pacman;
 
 import javax.swing.*;
 
-import static pacman.Config.getData;
-
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -14,12 +12,29 @@ import java.io.IOException;
  * Okno główne gry
  */
 public class Menu extends JFrame{
+	/**
+	 * Glowny panel menu
+	 */
     private JPanel PacManPanel;
-    private JTextArea pacManGameTextArea;
+    /**
+     * Przycisk rozpoczecia gry
+     */
     private JButton Button1;
+    /**
+     * Wyswietlanie wynikow
+     */
     private JButton Button2;
+    /**
+     * Wyswietlanie informacji o grze
+     */
     private JButton Button3;
+    /**
+     * Wyjscie z gry
+     */
     private JButton Button4;
+    /**
+     * Ten obiekt
+     */
     private Menu menu;
 
 
@@ -32,8 +47,10 @@ public class Menu extends JFrame{
          * Nadpisywanie parametru klasy nadrzędnej JFrame
          */
         super("PacMan");
-       // setContentPane(PacManPanel);
-        menu =this;
+
+        /**
+         * Tworzenie Paneli i przyciskow do menu
+         */
         PacManPanel = new JPanel();
         JPanel Panel2 = new JPanel();
         PacManPanel.setLayout(new BorderLayout());
@@ -46,13 +63,22 @@ public class Menu extends JFrame{
         Button3.setPreferredSize(new Dimension(400,100));
         Button4 = new JButton();
         Button4.setPreferredSize(new Dimension(400,100));
+        /**
+         * Ustalanie tekstu przyciskow
+         */
         Button1.setText("Graj");
         Button2.setText("Wyniki");
         Button3.setText("Informacje");
         Button4.setText("Wyjscie z gry");
+        /**
+         * Dodawanie przyciskow do paneli
+         */
         Panel2.add(Button1,BorderLayout.NORTH);
         Panel2.add(Button2,BorderLayout.CENTER);
         Panel2.add(Button3,BorderLayout.SOUTH);
+        /**
+         * Dodawanie paneli
+         */
         PacManPanel.add(Panel2,BorderLayout.NORTH);
         PacManPanel.add(Button4,BorderLayout.SOUTH);
         
@@ -63,6 +89,7 @@ public class Menu extends JFrame{
 
         setVisible(true);
 
+        menu =this;
 
         /**
          * Funkcja pierwszego przycisku
@@ -115,6 +142,8 @@ public class Menu extends JFrame{
              * @param e Obiekt interakcji z użytkownikiem
              */
             public void actionPerformed(ActionEvent e) {
+            	OknoInformacje oknoinfo = new OknoInformacje();
+            	oknoinfo.setVisible(true);
 
             }
         });

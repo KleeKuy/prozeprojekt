@@ -5,13 +5,23 @@ import java.io.IOException;
 
 import javax.swing.*;
 
-
+/**
+ * Okno wyswietlajace wyniki
+ */
 public class OknoWyniki extends JFrame {
 
-
+	/**
+	 * Glowny panel obiektu
+	 */
     private JPanel panelWyniki;
+    /**
+     * Pole gdzie wyswietlane sa wyniki
+     */
     private JTextArea textArea1;
 
+    /**
+     * Konstruktor obiektu
+     */
     public OknoWyniki() {
 
         super("Najlepsze wyniki");
@@ -21,13 +31,12 @@ public class OknoWyniki extends JFrame {
         textArea1.setPreferredSize(new Dimension(800,300));
 
         String wyniki = null;
+        //Odczytywanie wynikow z pliku tekstowego
 		try {
 			wyniki = LoadObjects.pobierzWyniki();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-        //for(int i=0; i<wyniki.length; i++)
         textArea1.append("Wyniki:\n");
         textArea1.append(wyniki);
         textArea1.setFont(textArea1.getFont().deriveFont(17f)); 
@@ -41,8 +50,6 @@ public class OknoWyniki extends JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         setVisible(true);
-
-        //LoadObjects loadObjects = new LoadObjects();
     
 
 

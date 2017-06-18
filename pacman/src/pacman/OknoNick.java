@@ -15,10 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Alison on 2017-04-23.
- */
-
-/**
  * Okienko z wpisywaniem nazwy przez gracza
  */
 public class OknoNick extends JFrame  {
@@ -46,17 +42,36 @@ public class OknoNick extends JFrame  {
      * Lista składająca się z nazw graczy
      */
     private final List<Nazwy> nazwyGraczy = new ArrayList<Nazwy>();
-    
+    /**
+     * Ten obiekt
+     */
     private OknoNick okno;
-
-    
+    /**
+     * Plansza gry zapisana w postali tablicy charow
+     */
 	private char[][] pkty ;
+	/**
+	 * Zawiera wysokosc i szerokosc planszy oraz numer planszy
+	 */
 	private int[] param  ;
+	/**
+	 * Pozycje scian na planszy
+	 */
 	private int[][] sciany ;
+	/**
+	 * Pozycje owocy na planszy
+	 */
 	private int[][] owoce ;
+	/**
+	 * Liczba zdobytych punktow
+	 */
 	private int liczba_punktow ;
     
-
+/**
+ * Konstruktor okna zapisujacego nick gracza
+ * @param menu menu glowne
+ * @throws IOException
+ */
     public OknoNick(Menu menu) throws IOException {
 
  
@@ -72,8 +87,8 @@ public class OknoNick extends JFrame  {
         
         
         
-        //setContentPane(OknoNcikPanel);
         okno = this;
+        //Tworzenie zawartosci okna
         OknoNcikPanel = new JPanel();
         JPanel panel2 = new JPanel();
         OknoNcikPanel.setLayout(new BorderLayout());
@@ -113,21 +128,7 @@ public class OknoNick extends JFrame  {
  * Ustawienie widoczności okienka
  */
         setVisible(true);
-
-
-        nickFormattedTextField.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
-
-        nickFormattedTextField.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyTyped(KeyEvent e) {
-                super.keyTyped(e);
-            }
-        });
+  
         zapiszIGrajButton.addActionListener(new ActionListener() {
             @Override
             /**
@@ -140,18 +141,10 @@ public class OknoNick extends JFrame  {
                  * Wyświetlenie komunikatu
                  */
                 JOptionPane.showMessageDialog(null,"Podana nazwa: "+ nazwyGraczy.get(0).pobierzNazwy(), "Nazwa #1", JOptionPane.PLAIN_MESSAGE);
-
-                Plansza nextWindowGamew = new Plansza();
-                nextWindowGamew.setVisible(true);
-                
-                
+                //Rozpoczecie gry
                 Plansza okno2 = new Plansza();
-        		//try {
-					okno2.launchFrame(param[1],param[0],pkty,sciany,owoce,liczba_punktow,temp,okno,nazwyGraczy.get(0).pobierzNazwy());
-				//} catch (InterruptedException e1) {
-					// TODO Auto-generated catch block
-				//	e1.printStackTrace();
-			//	}
+				okno2.launchFrame(param[1],param[0],pkty,sciany,owoce,liczba_punktow,temp,okno,nazwyGraczy.get(0).pobierzNazwy());
+
 
 
             }
@@ -167,16 +160,20 @@ public class OknoNick extends JFrame  {
             }
         });
     }
-    
+    /**
+     * Funkcja odczytujaca z pliku wartosci potrzebne do rozpoczecia gry
+     * @param parametry Zawiera wysokosc i szerokosc planszy oraz numer planszy
+     * @param nazwa Nazwa gracza
+     * @throws IOException
+     */
     public void config(int[] parametry,String nazwa) throws IOException
     {
-    		Odczytplanszy con = new Odczytplanszy();
+    		Config con = new Config();
     		pkty = con.odczytplanszy(parametry[2]);
-    		param = con.odczytparametrow();
+    		param = con.odczytparametrow(parametry[2]);
     		sciany = con.okreslaniePozycjiScian(pkty);
     		owoce = con.pozycjeOwocy(pkty);
     		liczba_punktow = con.liczba_punktow(pkty);
-    	//	this.setVisible(false);
     		if(parametry[2]!=1)
     		{
     			OknoPlUkonczona okienko = new OknoPlUkonczona(param[1],param[0],pkty,sciany,owoce,liczba_punktow,okno,parametry,nazwa);

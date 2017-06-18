@@ -1,53 +1,30 @@
 package pacman;
 
-import java.awt.Frame;
-import java.io.BufferedReader;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
-import java.util.Arrays;
-import java.util.Date;
+import java.io.UnsupportedEncodingException;
 import java.util.Scanner;
 
-
+/**
+ * Klasa odpowiadajaca za uaktualnianie pliku tekstowego z wynimaki
+ */
 public class SaveObjects {
 
-	public static void main(String[] args) {
-		
-		Frame a = new Frame ("Tytul okna do zachowania w pliku");
-		a.setBounds(20,20,400,500);
-		a.setVisible(true);
-		a.getGraphics().drawString("Ten napis nie zostanie zapisany razem z oknem...", 50, 100);
-		
-		FileOutputStream ostream = null;
+	/**
+	 * Aktualizacja wynikow w pliku tekstowym
+	 * @param nazwa_gracza Nowa nazwa gracza nowego rekordu
+	 * @param zdobyte_punkty Liczba punktow nowego rekordu
+	 */
+	public static void aktualizuj_wyniki(String nazwa_gracza, int zdobyte_punkty) 
+	{
+		//Odczyt aktualnych wynikow
+	     Scanner sc = null;
 		try {
-			ostream = new FileOutputStream("obiekty.sav");
+			sc = new Scanner(new FileReader("wyniki.txt"));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-		ObjectOutputStream p = null;
-		try {
-			p = new ObjectOutputStream(ostream);
-		    p.writeInt(1);
-			p.writeObject("Tekst do zapisania");
-			p.writeObject(new Date());
-			p.writeObject(a);
-			p.flush();
-			ostream.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		a.dispose();
-	}
-	
-	public static void aktualizuj_wyniki(String nazwa_gracza, int zdobyte_punkty) throws IOException
-	{
-		StringBuilder sb= new StringBuilder();
-	     Scanner sc = new Scanner(new FileReader("wyniki.txt"));
 			String test = new String();
 			String temp = null;
 			Rekord[] wyniki = new Rekord[11]; 
@@ -71,10 +48,8 @@ public class SaveObjects {
 			wyniki[10].nazwa_gracza=nazwa_gracza;
 			
 			Rekord temp1 = new Rekord();
-			int n = wyniki.length;
-			boolean swapped;
 
-
+			//Sortowanie tablicy wynikow z juz dodanym nowym rekordem
 			int j;
 			for(int i=1; i<wyniki.length; i++)
 			{
@@ -87,8 +62,15 @@ public class SaveObjects {
 					j--;
 				}
 			}
-			
-			 PrintWriter writer = new PrintWriter("wyniki.txt", "UTF-8");	
+			//Zapisywanie nowych wynikow
+			 PrintWriter writer = null;
+			try {
+				writer = new PrintWriter("wyniki.txt", "UTF-8");
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}	
 			 
 			 int k=1;
 			 for(int i=11; i>1; i--)

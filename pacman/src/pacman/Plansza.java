@@ -1,18 +1,14 @@
 package pacman;
 
-import java.awt.Image;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.EventQueue;
-import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import javax.swing.JButton;
@@ -22,23 +18,66 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import static pacman.Config.getData;
 
-
+/**
+ * Klasa ktora opisuje okno na ktorym wyswietlana jest gra oraz interfejs uzytkownika
+ */
 @SuppressWarnings("serial")
 public class Plansza extends JFrame{
 
+	/**
+	 * Liczba zdobytych punktow na tej planszy
+	 */
 	public int liczba_punktow=0;
+	/**
+	 * Liczba w sumie zdobytych punktow
+	 */
 	public int liczba_punktow_wynik=0;
+	/**
+	 * Numer plabszy na ktorej odbywa sie rozgrywka
+	 */
 	public int numer_planszy=1;
+	/**
+	 * Liczba punktow mozliwych do zdobycia na mapie
+	 */
 	private int max_punkty=0;
+	/**
+	 * Aktulana liczba zyc
+	 */
 	private int liczba_zyc = 3;
+	/**
+	 * Pole w ktorym wyswietlany jest wynik
+	 */
 	private JTextField wynik=null;
+	/**
+	 * Pole w ktorym wyswietlana jest liczba pozostalych zyc
+	 */
 	private JTextField zycia=null;
+	/**
+	 * Wyswietlana gra
+	 */
 	private Obrazgra gra=null;
+	/**
+	 * Okno wywolujace ten obiekt
+	 */
 	private OknoNick okno=null;
+	/**
+	 * nazwa gracza
+	 */
 	private String nazwa=null;
 	
 	
-	//Funkcja tworzaca Frame na ktorym toczy sie rozgrywka
+	/**
+	 * Funkcja tworzaca okno w ktorym toczy sie rozgrywka
+	 * @param wysokosc wysokosc planszy
+	 * @param szerokosc szerokosc planszy
+	 * @param punkty plansza
+	 * @param sciany lokalizacja scian
+	 * @param owoce lokalizacja owocow
+	 * @param maxPunkty maksymalna liczba punktow
+	 * @param param pozostala liczba zyc, suma zdobytych punktow, numer planszy
+	 * @param oknoN okno wywolujace ten obiekt
+	 * @param nazwa_gracza Nazwa gracza
+	 */
 	public void launchFrame(int wysokosc, int szerokosc,char[][] punkty,int[][] sciany,int[][] owoce,int maxPunkty,
 			int[] param,OknoNick oknoN, String nazwa_gracza) {
 		addWindowListener(new WindowAdapter() {
@@ -79,7 +118,7 @@ public class Plansza extends JFrame{
 				gra.pauza();
 			} 
 			} );
-		  // final Obrazgra gra = new Obrazgra(wysokosc,szerokosc,punkty,sciany,owoce,this);
+		//Tworzenie obiektu gra
 		gra = new Obrazgra(wysokosc,szerokosc,punkty,sciany,owoce,this);
 		   addComponentListener(new ComponentAdapter() {
 	        	public void componentResized(ComponentEvent ce) {
@@ -104,12 +143,15 @@ public class Plansza extends JFrame{
 
 	
 }
-	
+	/**
+	 * Zdobycie punktu
+	 */
 	public void dodajPunkt()
 	{
 		liczba_punktow++;
 		liczba_punktow_wynik++;
-		wynik.setText("Wynik "+liczba_punktow_wynik);	
+		wynik.setText("Wynik "+liczba_punktow_wynik);
+		// Wszystkie kropki zjedzone, plansza ukonczona
 		if(liczba_punktow==max_punkty)
 		{
 			gra.koniec=true;
@@ -123,13 +165,14 @@ public class Plansza extends JFrame{
 				parametr[2]=numer_planszy;
 				okno.config(parametr,nazwa);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
 			
 	}
-
+/**
+ * Utrata zycia, odjecie zycia
+ */
 	public void utrataZycia()
 	{
 		liczba_zyc--;
@@ -140,24 +183,20 @@ public class Plansza extends JFrame{
 			this.setVisible(false);
 			JOptionPane.showMessageDialog(null,"Porażka!", "Porażka!", JOptionPane.PLAIN_MESSAGE);
 			okno.setVisible(true);
+		
 			try {
 				//Zycia sie skonczyly, przekazywana jest informacja o numerze planszy i liczbie zyc oraz punktow
 				int[] parametr = new int[3];
 				parametr[0]=3;
 				parametr[1]=0;
 				parametr[2]=1;
-			     try {
-						SaveObjects.aktualizuj_wyniki(nazwa, liczba_punktow_wynik);
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
+			     SaveObjects.aktualizuj_wyniki(nazwa, liczba_punktow_wynik);
 				okno.config(parametr,nazwa);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}
+}
+		
 		gra.utrata_zycia();
 		
 		

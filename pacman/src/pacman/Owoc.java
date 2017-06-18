@@ -1,5 +1,7 @@
 package pacman;
-
+/**
+ * Obiekt owoc, po zjedzeniu ktorego pacman zwieksza szybkosc
+ */
 public class Owoc{
 	
 	/**
@@ -18,6 +20,14 @@ public class Owoc{
 	 * Pozycja w osi poziomej obiektu
 	 */
 	private int pozY=0;
+	/**
+	 * Szerokosc obiektu
+	 */
+	private int szer=0;
+	/**
+	 * Wysokosc
+	 */
+	private int wys=0;
 	/**
 	 * Czas zjedzenia owocu
 	 */
@@ -38,16 +48,18 @@ public class Owoc{
 	 * @param x Pozycja x
 	 * @param y Pozycja y
 	 */
-	Owoc(int szybkosc,int x, int y){
+	Owoc(int szybkosc,int x, int y, int Wys, int Szer){
 		this.szybkosc=szybkosc;
 		pozX= x;
 		pozY= y;
+		wys=Wys;
+		szer=Szer;
 	}
 
 	
 
 	/**
-	 * Funkcja sprawdzajaca czy Pacman zjadl owoc
+	 * Funkcja sprawdzajaca czy Pacman zjadl owoc, jezei tak to zwieksza predkosc
 	 * @param x Pozycja x pacmana
 	 * @param y Pozycja y pacmana
 	 */
@@ -61,10 +73,27 @@ public class Owoc{
 		}
 	}
 
-	public void skalowanie()
+	/**
+	 * Skalowanie owocu w przypadku zmiany wielkosci okna
+	 * @param nowaWys nowa wysokosc owocu
+	 * @param nowaSzer nowa szerokosc owocu
+	 */
+	public void skalowanie(int nowaWys,int nowaSzer)
 	{
-		//TODO skalowanie
+ 		pozX=pozX/szer*nowaSzer;
+ 		pozY=pozY/wys*nowaWys;
+ 		
+		wys=nowaWys;
+		szer=nowaSzer;
+ 		
+		while(pozX%szer!=0)
+			pozX--;
+		while(pozY%wys!=0)
+			pozY--;
 	}
+	/**
+	 * Sprawdzenie czy od zjedzenia uplynelo 5 sekund, jezeli tak to predkosc wraca do poprzeniej
+	 */
 	public void koniecCzasu()
 	{
 		if(czas!=0)
@@ -75,6 +104,10 @@ public class Owoc{
 		}
 	}
 	
+	/**
+	 * Sprawdzenie szybkosci
+	 * @return aktualna szybkosc
+	 */
 	public int jakaSzybkosc()
 	{
 		return szybkosc;

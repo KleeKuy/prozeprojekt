@@ -7,6 +7,9 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
+/**
+ * Okno wyswietlajace sie po ukonczeniu planszy
+ */
 public class OknoPlUkonczona extends JFrame{
 	
 	/*
@@ -22,6 +25,18 @@ public class OknoPlUkonczona extends JFrame{
 	 */
 	private JPanel ukonconopanel;
 	
+	/**
+	 * Konstruktor obiektu
+	 * @param param1 wysokosc planszy
+	 * @param param2 szerokosc planszy
+	 * @param pkty plansza
+	 * @param sciany pozycje scian
+	 * @param owoce pozycje owocow
+	 * @param liczba_punktow zdobyte do tej pory punkty
+	 * @param okno okno z ktorego wywolany zostal ten konstruktor
+	 * @param liczbaZyc pozostala liczba zyc
+	 * @param nazwa nazwa gracza
+	 */
 	public OknoPlUkonczona(int param1,int param2,char [][] pkty,int[][] sciany,int[][] owoce,int liczba_punktow,OknoNick okno,int[] liczbaZyc,String nazwa)
 	{
 		
@@ -29,8 +44,7 @@ public class OknoPlUkonczona extends JFrame{
 
 		  
 
-		  
-     // okno = this;
+		  //Utworzenie przyciskow i tekstu oraz jego wyswietlenie
       ukonconopanel = new JPanel();
       ukonconopanel.setLayout(new BorderLayout());
       OK = new JButton();
@@ -65,8 +79,6 @@ public class OknoPlUkonczona extends JFrame{
       OK.addActionListener(new ActionListener() {
           @Override
           public void actionPerformed(ActionEvent e) {
-            //  Plansza nextWindowGamew = new Plansza();
-              //nextWindowGamew.setVisible(true);
     			Plansza okno2 = new Plansza();
     			okno2.launchFrame(param1,param2,pkty,sciany,owoce,liczba_punktow,liczbaZyc,okno,nazwa);
               setVisible(false);

@@ -7,16 +7,10 @@ import java.awt.Canvas;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.Rectangle;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-
 import javax.swing.ImageIcon;
-import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+
 
 /**
  * Główna makieta gry
@@ -24,19 +18,19 @@ import javax.swing.JPanel;
 public class Obrazgra extends Canvas implements Runnable, KeyListener{
 	
 	/**
-     * Obraz pionowej ściany
+     * Obraz pionowej ściany nie skalowany
      */
     private Image pion = null;
     /**
-     * Obraz pustego pola
+     * Obraz pustego pola nie skalowany
      */
     private Image pusto = null;
     /**
-     * Obraz pustego pola
+     * Obraz pustego pola nie skalowany
      */
     private Image kropka = null;
     /**
-     * Obraz poziomej ściany
+     * Obraz poziomej ściany nie skalowany
      */
     private Image poziom = null;
     /**
@@ -56,19 +50,19 @@ public class Obrazgra extends Canvas implements Runnable, KeyListener{
      */
     private Image pacmanN = null;
     /**
-     * Obraz pacmana skierowanego w prawo
+     * Obraz pacmana skierowanego w prawo skalowany
      */
     private Image pacmanEe = null;
     /**
-     * Obraz pacmana skierowanego w lewo
+     * Obraz pacmana skierowanego w lewo skalowany
      */
     private Image pacmanWw = null;
     /**
-     * Obraz pacmana skierowanego do dołu
+     * Obraz pacmana skierowanego do dołu skalowany
      */
     private Image pacmanSs = null;
     /**
-     * Obraz pacmana skierowanego w dół
+     * Obraz pacmana skierowanego w dół skalowany
      */
     private Image pacmanNn = null;
     /**
@@ -83,40 +77,40 @@ public class Obrazgra extends Canvas implements Runnable, KeyListener{
      * Obraz  owoca
      */
     private Image owoc = null;
-    
-    
-    //TODO TU ZACZYNAJA SIE OBRAZY KTORYCH ROZMIARY SA SKALOWANE, dopisze potem xd
+    /**
+     * Obraz pacmana skalowany
+     */
     private Image pacman10=null;
     /**
-     * Obrazek przedstawiający puste miejsce
+     * Obrazek przedstawiający puste miejsce skalowany
      */
     private Image pusto1=null;
     /**
-     * Obrazek przedstawiający pionową ściankę
+     * Obrazek przedstawiający pionową ściankę skalowany
      */
     private Image pion1=null;
     /**
-     * Obrazek przedstawiający poziomą ściankę
+     * Obrazek przedstawiający poziomą ściankę skalowany
      */
     private Image poziom1=null;
     /**
-     * Obrazek przedstawiający duszka
+     * Obrazek przedstawiający skalowany
      */
     private Image duszek1=null;
     /**
-     * Obrazek przedstawiający niebieskiego duszka
+     * Obrazek przedstawiający niebieskiego duszka skalowany
      */
     private Image nduszek1=null;
     /**
-     * Obrazek przedstawiający podwojna sciane duszka
+     * Obrazek przedstawiający podwojna sciane skalowany
      */
     private Image x=null;
 	/**
-     * Obrazek przedstawiający kropke
+     * Obrazek przedstawiający kropke skalowany
      */
     private	Image kropka1=null;
     /**
-     * Obraz  owoca
+     * Obraz  owoca skalowany
      */
     private Image owoc1 = null;
     /**
@@ -124,7 +118,7 @@ public class Obrazgra extends Canvas implements Runnable, KeyListener{
      */  
     private Image offscreen = null;
     /**
-     * Obraz pionowej ściany
+     * Obiekt graphics do podwojnego buforowania
      */
     private Graphics offscreeng = null;
     /**
@@ -156,7 +150,7 @@ public class Obrazgra extends Canvas implements Runnable, KeyListener{
      */
     private int StartpacY=-1;
     /**
-	  * Obraz dwie sciany
+	  * Obraz dwoch scian poziomej i pionowej nie skalowany
 	  */
     private Image skrzyzowanie = null;
     /**
@@ -204,9 +198,8 @@ public class Obrazgra extends Canvas implements Runnable, KeyListener{
 	   */
 	private Owoc[] owoce = null;  
 	/**
-	 * Liczba zdobytych punktow
+	 * Obiekt plansza na ktorym toczy sie gra
 	 */
-	private int liczba_punktow;
 	private Plansza pl;
 	/*
 	 * Okresla czy gra jest zapauzowane
@@ -216,14 +209,21 @@ public class Obrazgra extends Canvas implements Runnable, KeyListener{
 	 * Okresla czy plansza zostala ukonczona
 	 */
 	boolean koniec = false;
+	/**
+	 * Watek tego obiektu
+	 */
+    public Thread kicker = null;
 
 	
-	 /**
-     * Konstruktor podczas którego między innymi ładowane są obrazki
-     * @param wysokosc Wysokość
-     * @param szerokosc Szerokość
-     * @param punkty  Punkty służące do rysowania planszy za pomocą obrazków
-     */
+	/**
+	 * Konstruktoe obiektu obrazgra
+	 * @param wysokosc wysokosc pojedynczego pola
+	 * @param szerokosc szerokosc pojedynczego pola
+	 * @param punkty Punkty służące do rysowania planszy za pomocą obrazków
+	 * @param sciany Wspolrzedna scian
+	 * @param wspOwocow Wspolrzedna owocow
+	 * @param p Obiekt plansza na ktorym toczy sie gra
+	 */
 	   Obrazgra(int wysokosc,int szerokosc,char[][] punkty,int[][] sciany,int[][] wspOwocow,Plansza p) {
 	        
 		   pl=p;
@@ -301,10 +301,10 @@ public class Obrazgra extends Canvas implements Runnable, KeyListener{
 			
 			  //Utworzenie tablicy owocow
 			  owoce = new Owoc[wspOwocow.length+1];
-			  owoce[0] = new Owoc(szybkosc,1,1);
+			  owoce[0] = new Owoc(szybkosc,-1,-1,-1,-1);
 			  for(int k=1; k<wspOwocow.length+1; k++)
 			  {
-				  owoce[k] = new Owoc(szybkosc,wspOwocow[k-1][0],wspOwocow[k-1][1]);
+				  owoce[k] = new Owoc(szybkosc,wspOwocow[k-1][0],wspOwocow[k-1][1],wys,szer);
 			  }
 			  
 			
@@ -356,8 +356,12 @@ public class Obrazgra extends Canvas implements Runnable, KeyListener{
 	        return new Dimension(szerokosc*szer, wysokosc*wys);
 	    }
 	    
-	    
-	    void updateOffscreenSize(final int w, final int h) {
+/**
+ * Funkcja wywolywana gdy wielkosc planszy sie zmieni
+ * @param w nowa szerokosc planszy
+ * @param h nowa wysokosc planszy
+ */
+	   synchronized void updateOffscreenSize(final int w, final int h) {
 	    	if (kicker != null) {
 	    		Thread k = kicker;
 	    		kicker = null;
@@ -370,9 +374,7 @@ public class Obrazgra extends Canvas implements Runnable, KeyListener{
 	        zmianaRozmiarow(w,h);
 	        (kicker = new Thread(this)).start();
 	    }
-	    /**
-	     * Dodaje domyślny wymiar
-	     */
+	     //TODO
 	    public void addNotify() {
 	        super.addNotify();
 	        offscreen = createImage(getPreferredSize().width, getPreferredSize().height);
@@ -399,6 +401,7 @@ public class Obrazgra extends Canvas implements Runnable, KeyListener{
 	     */
 	    void zaladujplansze() {
 	    	
+	    	//Skalowanie o ile zmienila sie plansza
 	    	if(zmianaRozmiarow == true)
 	    	{
 	        /**
@@ -440,16 +443,10 @@ public class Obrazgra extends Canvas implements Runnable, KeyListener{
     		
     		while(pacman10.getHeight(null)==-1 ||owoc1.getHeight(null)==-1 || pusto1.getHeight(null)==-1 || pion1.getHeight(null)==-1 || poziom1.getHeight(null)==-1 || duszek1.getHeight(null)==-1 || nduszek1.getHeight(null)==-1 || x.getHeight(null)==-1 || kropka1.getHeight(null)==-1)
        		{
-       		sleeep(); //TODO optymalniej to sie raczej da zrobic xd, soon^tm
+       		sleeep();
        		}
 	    	}
-	    /*	
-			if(owoce!=null && pierwszeRysowanie ==true)
-			{
-				owoce = null;
-			}*/
-	    	
-	    //	Owoc tempOwoce[] = new Owoc[1];
+
 	    	int w=szer;
 	    	int h =wys;
 	        int i=0;
@@ -487,7 +484,6 @@ public class Obrazgra extends Canvas implements Runnable, KeyListener{
 					else if(punkty[i][j]=='p')
 					{
 						offscreeng.drawImage(pusto1, w*i, h*j, null);
-					//	offscreeng.drawImage(pacman10, w*i, h*j, null);
 						StartpacX=i*szer;
 						StartpacY=j*wys;
 
@@ -497,10 +493,7 @@ public class Obrazgra extends Canvas implements Runnable, KeyListener{
 						offscreeng.drawImage(duszek1, w*i, h*j, null);
 						if(duszekk==null)
 						{
-						//char[][] plansza2 = null;
-						//System.arraycopy( punkty, 0, plansza2, 0, punkty.length );
-						//plansza2=punkty.clone();
-						duszekk = new Duszek(w*i,h*j, sciany,szybkosc,punkty.clone());
+						duszekk = new Duszek(w*i,h*j, sciany,szybkosc-1,punkty);
 						}
 						punkty[i][j]=' ';
 
@@ -508,8 +501,6 @@ public class Obrazgra extends Canvas implements Runnable, KeyListener{
 					else if(punkty[i][j]=='n')
 					{
 						offscreeng.drawImage(nduszek1, w*i, h*j, null);
-						//char[][] plansza2 = new char[punkty.length][punkty.length];
-					//	System.arraycopy( punkty, 0, plansza2, 0, punkty.length );
 						nduszekk = new Duszek(w*i, h*j, sciany, szybkosc,punkty);
 						punkty[i][j]=' ';
 
@@ -526,7 +517,6 @@ public class Obrazgra extends Canvas implements Runnable, KeyListener{
 						  j++;
 					  }
 			    }
-			//  pierwszeRysowanie = false;
 			
 	    }
 	    
@@ -627,31 +617,21 @@ public class Obrazgra extends Canvas implements Runnable, KeyListener{
 
 	    		}
 	    		
-	    		//Ruch duszka
-	    		if(duszekk!=null || nduszekk!=null)
+	    		//Ruch duszka oraz sprawdzenie czy duszek trafil na pacmana
+	    		if(duszekk!=null)
 	    		{
 	    		int pozDuszek[]=duszekk.droga(pacX,pacY);
-	    		offscreeng.drawImage(duszek, pozDuszek[0], pozDuszek[1],null);
-	    		//if((pozDuszek[0]+szer == pacX && pozDuszek[1] == pacY) || (pozDuszek[0]-szer == pacX && pozDuszek[1] == pacY) ||(pozDuszek[0] == pacX && pozDuszek[1]+wys == pacY) ||(pozDuszek[0] == pacX && pozDuszek[1]-wys == pacY))
+	    		offscreeng.drawImage(duszek1, pozDuszek[0], pozDuszek[1],null);
 	    		if(Math.abs(pozDuszek[0]-pacX)<szer && Math.abs(pozDuszek[1]-pacY)<wys)
-	    			pl.utrataZycia();
-	    		if(duszekk.wys != wys || duszekk.szer != szer)
-	    		{
-	    			if(duszekk!=null)
-	    			{
-	    			duszekk.zmianaRozmiarow(wys,szer);
-	    			}
-	    			if(nduszekk!=null)
-	    			{
-	    			nduszekk.zmianaRozmiarow(wys,szer);
-	    			}
-	    		}
+					pl.utrataZycia();
 	    		
 	    		}
 	    		if(nduszekk!=null)
     			{
 	    			int pozDuszek[]=nduszekk.droga(pacX,pacY);
-		    		offscreeng.drawImage(nduszek, pozDuszek[0], pozDuszek[1],null);
+		    		offscreeng.drawImage(nduszek1, pozDuszek[0], pozDuszek[1],null);
+		    		if(Math.abs(pozDuszek[0]-pacX)<szer && Math.abs(pozDuszek[1]-pacY)<wys)
+						pl.utrataZycia();
     			}
 	    		
 
@@ -659,10 +639,9 @@ public class Obrazgra extends Canvas implements Runnable, KeyListener{
 	    
 
 	    
-	    public Thread kicker = null;
 	    
 	    /**
-	     * Czekanie na ruch
+	     * Czekanie
 	     */
 	    void sleeep() {
 	        try {
@@ -672,7 +651,8 @@ public class Obrazgra extends Canvas implements Runnable, KeyListener{
 	    }
 
 	    /**
-	     * Ruch pacmana
+	     * Metoda run tego obiektu, jezeli pauza jest wlaczona to czeka,
+	     * w innym przypadku tworzy uaktualniona plansze, po czym naklada na nia pacmana i duszki, ostatecznie aktualizuje wyswietlana plansze
 	     */
 	    public void run() {
 	    	while (kicker == Thread.currentThread()) {
@@ -693,7 +673,7 @@ public class Obrazgra extends Canvas implements Runnable, KeyListener{
 
 
 	    /**
-	     * Nacisniecie przycisku na klawiaturze
+	     * Nacisniecie przycisku na klawiaturze - ruch pacmana
 	     */
 		@Override
 		public void keyPressed(KeyEvent arg0) {
@@ -702,13 +682,11 @@ public class Obrazgra extends Canvas implements Runnable, KeyListener{
 
 		@Override
 		public void keyReleased(KeyEvent arg0) {
-			// TODO Auto-generated method stub
 			
 		}
 
 		@Override
 		public void keyTyped(KeyEvent arg0) {
-			// TODO Auto-generated method stub
 			
 		}
 
@@ -740,8 +718,14 @@ private void displayInfo(KeyEvent e){
  
 }
 
-private void zmianaRozmiarow(int w, int h)
+/**
+ * Aktualizacja wartosci w przypadku zmiany wielkosci planszy
+ * @param w nowa szerokosc planszy
+ * @param h nowa wysokosc planszy
+ */
+synchronized private void zmianaRozmiarow(int w, int h)
 {
+	//Ustalenie aktualnej pozycji scian
 	int k;
 	 for(k =0; k<sciany.length; k++)
 	 {
@@ -751,14 +735,15 @@ private void zmianaRozmiarow(int w, int h)
 		pacX=pacX/szer;
 		pacY=pacY/wys;
 		
-
+	//Nowa szerokosc pojedynczego pola
 		szer=(w-18)/szerokosc;
 		while(szer%szybkosc!=0)
 			szer--;
 		wys=(h-83)/wysokosc;
+	//Nowa wysokosc pojedynczego pola
 		while(wys%szybkosc!=0)
 			wys--;
-
+	//Zmiana rozmiarow grafiki pacman
 		zmianaRozmiarow = true;
 		pacmanNn=pacmanN.getScaledInstance(szer, wys, Image.SCALE_DEFAULT);
 		pacmanSs=pacmanS.getScaledInstance(szer, wys, Image.SCALE_DEFAULT);
@@ -768,28 +753,40 @@ private void zmianaRozmiarow(int w, int h)
 		nduszek1=nduszek.getScaledInstance(szer,wys,Image.SCALE_DEFAULT);
 
 
-	
-		
-
+	//Nowa lokalizacja scian
 		 for(k =0; k<sciany.length; k++)
 		 {
 	 		sciany[k][0]=sciany[k][0]*szer;
 	 		sciany[k][1]=sciany[k][1]*wys;
 
 		 }
+	//Nowe wspolrzedne pacmana
 	 		pacX=pacX*szer;
 	 		pacY=pacY*wys;
-	 		
 			while(pacX%szer!=0)
 				pacX--;
 			while(pacY%wys!=0)
 				pacY--;
-
+			
+	//Skalowanie duszka
+    			if(duszekk!=null)
+    			{
+    			duszekk.zmianaRozmiarow(wys,szer,sciany);
+    			}
+    			if(nduszekk!=null)
+    			{
+    			nduszekk.zmianaRozmiarow(wys,szer,sciany);
+    			}
+    //Skalowanie owocow
+    			for(int i=1; i<owoce.length; i++)
+    				owoce[i].skalowanie(wys,szer);
 
 }
 
+
 /**
- *Zmiana szybkosci pacmana zwiazana ze zjedzeniem owocu
+ * Zmiana szybkosci pacmana zwiazana ze zjedzeniem owocu
+ * @param nowa_szybkosc nowa szybkosc pacmana
  */
 public void zmiana_szybkosci(int nowa_szybkosc)
 {
@@ -819,9 +816,14 @@ public void pauza()
 
 public void utrata_zycia()
 {
+	
 	zapauzowana=true;
 	pacX=StartpacX;
 	pacY=StartpacY;
+	while(pacX%szer!=0)
+		pacX--;
+	while(pacY%wys!=0)
+		pacY--;
 	if(duszekk!=null)
 	{
 		duszekk.powrot();

@@ -9,7 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
- * Created by Alison on 2017-04-02.
+ * Okno z zapytaniem czy zakonczyc gre
  */
 public class OknoZakoncz extends JFrame {
     /**
@@ -30,14 +30,15 @@ public class OknoZakoncz extends JFrame {
      */
     public OknoZakoncz() {
 
-        super("Zakończ");
+        super("Czy zakończyć?");
 
+        //Tworzenie przyciskow wyswietlanych w oknie
         PanelZakoncz = new JPanel();
         PanelZakoncz.setLayout(new FlowLayout());
         ButtonTak = new JButton();
-        ButtonTak.setPreferredSize(new Dimension(200,200));
+        ButtonTak.setPreferredSize(new Dimension(150,150));
         ButtonNie = new JButton();
-        ButtonNie.setPreferredSize(new Dimension(200,200));
+        ButtonNie.setPreferredSize(new Dimension(150,150));
         ButtonTak.setText("TAK");
         ButtonNie.setText("NIE");
 
